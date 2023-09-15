@@ -17,10 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from Stats import urls
-from django.config import settings
-from django.config.urls.static import static
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('stats/',include(urls)),
-] + static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
+]
