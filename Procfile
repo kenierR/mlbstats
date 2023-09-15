@@ -1,0 +1,1 @@
+web: gunicorn mlbproject.wsgi --log-file -
