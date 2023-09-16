@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "Stats/base.html" %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,9 +7,21 @@
     <title>Index</title>
 </head>
 <body>
-    Esto es una prueba
-    {% block content%}
-        esto es la otra prueba
-    {% endblock %}
+{% block content%}
+ <div>
+      <div class="alert alert-primary">
+        A simple alert built with contrast design check it out!
+      </div>
+      <div class="alert alert-success">
+        A simple alert built with contrast design check it out!
+      </div>
+      <div class="alert alert-danger">
+        A simple alert built with contrast design check it out!
+      </div>
+    </div>
+
+
+
+{% endblock %}
 </body>
 </html>
