@@ -27,9 +27,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='slippery')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'RENDER' not in os.environ
 print("---------------------------------------------------------",DEBUG)
-print("---------------------------------------------------------",DEBUG)
-print("---------------------------------------------------------",DEBUG)
-print("---------------------------------------------------------",DEBUG)
+
 
 ALLOWED_HOSTS = []
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
@@ -94,19 +92,20 @@ WSGI_APPLICATION = 'mlbproject.wsgi.application'
 
 if DEBUG:
     DATABASES = {
+        'default': dj_database_url.config(
+            default='postgresql://postgres:postgres@localhost:5432/mysite',
+        )
+
+    }
+
+
+else:
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-}
-else:
-    DATABASES = {
-        'default': dj_database_url.config(
-            default='postgresql://postgres:postgres@localhost:5432/mysite',
-        )
-            
     }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
