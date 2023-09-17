@@ -1,0 +1,44 @@
+{% extends "Stats/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Equipos</title>
+</head>
+<body>
+{% block content%}
+
+
+
+
+<div class="card card p-5" style="width: 100%">
+  <table class="table table-bordered table-striped data-table1" style="min-width: 100%">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>abbreviation</th>
+        <th>league</th>
+        <th>division</th>
+        <th data-type="date" data-format="YYYY/MM/DD">Start Date</th>
+        <th>ID</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for x in teams %}
+      <tr>
+        <td><a href="{% url 'Stats:teamdetails' x.id %}">{{x.name}}</a> </td>
+        <td>{{x.abbreviation}}</td>
+        <td>{{x.league.name}}</td>
+        <td>{{x.division.name}}</td>
+        <td>{{x.firstYearOfPlay}}</td>
+        <td>{{x.id}}</td>
+
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
+</body>
+</html>
