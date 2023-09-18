@@ -8,15 +8,29 @@
 <body>
 {% block content%}
 
-
-
+<div class="accordion" id="accordionExample">
+  {% for key,value in teams.items %}
+    <div class="accordion-item">
+    <h2 class="accordion-header" id="headingOne">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        {{key.name}}
+      </button>
+    </h2>
+    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        {{x}}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
 
 <div class="card card p-5" style="width: 100%">
   <table class="table table-bordered table-striped data-table1" style="min-width: 100%">
     <thead>
       <tr>
         <th>Name</th>
-        <th>abbreviation</th>
+        <th>abb</th>
         <th>league</th>
         <th>division</th>
         <th data-type="date" data-format="YYYY/MM/DD">Start Date</th>
@@ -38,6 +52,8 @@
     </tbody>
   </table>
 </div>
+
+
 
 {% endblock %}
 </body>

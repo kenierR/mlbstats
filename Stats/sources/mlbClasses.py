@@ -19,7 +19,7 @@ class MLB:
         self.listMetas=[]
         self.peoples = sap.get('sports_players', {'season': 2023})['people']
         self.division = div = sap.get('divisions',{})
-        self.teams = sap.get('teams',{'sportId':''})
+        self.teams = sap.get('teams',{'sportId':'1'})
         self.jugadores = None
         self.metas =  [
             'assists', 'shutouts', 'homeRuns', 'sacrificeBunts', 'sacrificeFlies', 'runs', 'groundoutToFlyoutRatio','stolenBases', 'battingAverage', 'groundOuts', 'numberOfPitches',

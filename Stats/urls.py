@@ -8,5 +8,6 @@ urlpatterns = [
     path('',views.index,name='index'),
     path('teams/',views.teams,name='teams'),
     path('teamdetails/<int:id>',views.teamdetails,name='teamdetails'),
+    path('players/',views.players,name='players')
 ]
 

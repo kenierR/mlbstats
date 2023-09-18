@@ -1,0 +1,114 @@
+{% extends "Stats/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Players</title>
+</head>
+<body>
+{% block content%}
+<div class="container container-collapse">
+{% for x in players %}
+  <div class="blockcode">
+    <div class="header">{{x.fullName}}</div>
+    <div class="example2">
+      <a
+        class="btn btn-light"
+        style="width: fit-content"
+        data-bs-toggle="collapse"
+        href="#{{x.firstName}}{{players.0.id}}"
+        role="button"
+        aria-expanded="false"
+        aria-controls="{{x.firstName}}{{players.0.id}}"
+      >
+        Collapse
+      </a>
+      <div>
+        <div class="collapse" id="{{x.firstName}}{{players.0.id}}">
+          <div class="card card-body">
+            --------------------------------------------------
+            <div class="panel" style="width: 90%">
+              <div class="panel-body">
+                <div class="pane d-flex align-items-center mt-0 mb-3">
+                  <img
+                    class="pane-img"
+                    src="https://img.mlbstatic.com/mlb-photos/image/upload/d_people:generic:headshot:67:current.png/w_213,q_auto:best/v1/people/{{x.id}}/headshot/67/current"
+                    alt=""
+                  />
+            <div class="ms-3">
+            <h6 class="m-0" style="font-weight:600;">
+              {% if 'name' in x.currentTeam %}
+                "{{x.currentTeam.name}}"
+              {% else %}
+              "Free agent"
+              {% endif %}
+            </h6>
+
+            <p class="m-0 pane-item">{{x.primaryPosition.name}}</p>
+          </div>
+
+      <div class="dropdown p-0 ms-auto pane-item">
+        <i
+          class="fa fa-ellipsis-h display-1"
+          id="dropdownMenuButton"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+        </i>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <li><a class="dropdown-item" href="#">Action</a></li>
+          <li><a class="dropdown-item" href="#">Another action</a></li>
+          <li><a class="dropdown-item" href="#">Something else here</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card-text">
+      ----------------------------------------------------------------
+        <div class="blockcode">
+      <div class="header">{{x.fullName}}</div>
+      <div class="description"></div>
+      <div class="example">
+        <div class="card card p-5" style="width: 100%">
+          <table
+            class="table table-bordered data-table2"
+            style="min-width: 100%"
+          >
+            <thead>
+              <tr>
+                <th>AB</th>
+                <th>Ext.</th>
+                <th>City</th>
+                <th data-type="date" data-format="YYYY/MM/DD">Start Date</th>
+                <th>Completion</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Unity Pugh</td>
+                <td>9958</td>
+                <td>Curicó</td>
+                <td>2005/02/11</td>
+                <td>37%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div></div>
+      ----------------------------------------------------------------
+    </div>
+  </div>
+            --------------------------------------------------
+          </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+</div>
+{% endblock %}
+</body>
+</html>
