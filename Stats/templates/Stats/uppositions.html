@@ -1,0 +1,40 @@
+{% extends "Stats/base.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Positions</title>
+</head>
+<body>
+{% block content%}
+    <div class="blockcode">
+      <div class="header">Not striped Datatable</div>
+      <div class="description"></div>
+      <div class="example">
+        <div class="card card p-5" style="width: 100%">
+          <table
+            class="table table-bordered data-table2"
+            style="min-width: 100%"
+          >
+            <thead>
+              <tr>
+                <th>Actions</th>
+
+              </tr>
+            </thead>
+            <tbody>
+            {% for x in pos %}
+              <tr>
+                <td>Update :{{x}}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+</body>
+</html>

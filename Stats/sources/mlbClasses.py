@@ -14,12 +14,17 @@ def leadersType():
     return None
 
 
-class MLB:
+class MLB:#Clase de tipo singlenton, garantiza que exista una sola clase.
+    __instance = None
+    def __new__(cls):
+        if MLB.__instance is None:
+            MLB.__instance = object.__new__(cls)
+        return MLB.__instance
     def __init__(self):
         self.listMetas=[]
-        self.peoples = sap.get('sports_players', {'season': 2023})['people']
+        self.peoples = sap.get('sports_players', {'season': 2023,'sportId':1})['people']
         self.division = div = sap.get('divisions',{})
-        self.teams = sap.get('teams',{'sportId':'1'})
+        self.teams = sap.get('teams',{})
         self.jugadores = None
         self.metas =  [
             'assists', 'shutouts', 'homeRuns', 'sacrificeBunts', 'sacrificeFlies', 'runs', 'groundoutToFlyoutRatio','stolenBases', 'battingAverage', 'groundOuts', 'numberOfPitches',
@@ -345,9 +350,14 @@ class MLB:
     def busca_lista_players_crit(self,l,lp):
         list_players = {}
         for x in lp:
-            personId = sap.lookup_player(x)[0]['id']
-            person = sap.player_stat_data(personId, group="[hitting]", type="season", sportId=1)
-            list_players[x] = self.busca_lista_crit(l,person)
+            try :
+                personId = sap.lookup_player(x)[0]['id']
+                person = sap.player_stat_data(personId, group="[hitting]", type="season", sportId=1)
+                list_players[x] = self.busca_lista_crit(l, person)
+            except:
+                list_players[x] = 'Not active player'
+
+
         return list_players
 
 
@@ -359,15 +369,14 @@ aux = MLB()
 # person = {'otro':[{'runs':15},6],'b':{ 'runs':30}}
 # aux1 = {'a':6,'runs':4}
 
-playersList = [
-    'Aaron Judge',
-    'Mookie Betts',
-    'Shohei Ohtani',
-    'Freddie Freeman',
-    'Kyle Tucker',
-    'Ronald Acuña Jr.',
-    'Yordan Alvarez'
-]
+# playersList = [
+#     'Aaron Judge',
+#     'Mookie Betts',
+#     'Freddie Freeman',
+#     'Kyle Tucker',
+#     'Ronald Acuña Jr.',
+#     'Yordan Alvarez'
+# ]
 # crit_list = ['gamesPlayed','runs','avg','homeRuns','hits']
 # to_ptr = aux.busca_lista_players_crit(crit_list,playersList)
 # df = pd.DataFrame(to_ptr)

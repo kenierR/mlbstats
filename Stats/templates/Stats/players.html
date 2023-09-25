@@ -76,20 +76,23 @@
           >
             <thead>
               <tr>
-                <th>AB</th>
-                <th>Ext.</th>
-                <th>City</th>
-                <th data-type="date" data-format="YYYY/MM/DD">Start Date</th>
-                <th>Completion</th>
+                {% for key,value in stats.items %}
+                  {% for k,v in value.items %}
+                    <th>{{ k }}</th>
+                  {% endfor %}
+                {% endfor %}
+
+
+              <th data-type="date" data-format="YYYY/MM/DD">Start Date</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Unity Pugh</td>
-                <td>9958</td>
-                <td>Curicó</td>
-                <td>2005/02/11</td>
-                <td>37%</td>
+                {% for key,value in stats.items %}
+                  {% for k,v in value.items %}
+                    <td>{{ v.0 }}</td>
+                  {% endfor %}
+                {% endfor %}
               </tr>
             </tbody>
           </table>
