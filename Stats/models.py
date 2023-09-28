@@ -60,8 +60,9 @@ class Division(models.Model):
     abbreviation = models.CharField(max_length=10, null=True)
     league = models.ForeignKey('League', on_delete=models.CASCADE, null=True)
     sport = models.ForeignKey('Sport', on_delete=models.CASCADE, null=True)
-    hasWildCard = models.BooleanField(null=True)
+    hasWildcard = models.BooleanField(null=True)
     sortOrder = models.IntegerField(null=True)
+    numPlayoffTeams = models.IntegerField(null=True)
     active = models.BooleanField(null=True)
 class Sport(models.Model):#hecho
     id = models.IntegerField(primary_key=True, unique=True, blank=False)

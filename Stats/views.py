@@ -9,7 +9,20 @@ aux=MLB()
 def index(request):
     return render(request,'Stats/index.html',{})
 def updivisions(request):
+    divisions = sap.get('divisions', {})['divisions']
+    for div in divisions:
+        season = Season.objects.get(pk=div['season'])
+        div['season'] = season
 
+        league = League.objects.get(pk=div['league']['id'])
+        print(div['id'])
+        div['league'] = league
+
+        sport = Sport.objects.get(pk=div['sport']['id'])
+        div['sport'] = sport
+
+        dbdivisions = Division(**div)
+        dbdivisions.save()
     return render(request,'Stats/updivisions.html',{})
 def upleagues(request):
     league = sap.get('league', {'sportId': '', 'leagueIds': ''})['leagues']
