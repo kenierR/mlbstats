@@ -25,13 +25,13 @@ class Teams(models.Model):
     franchiseName = models.CharField(max_length=50,null=True)
     clubName = models.CharField(max_length=50,null=True)
     active = models.BooleanField(null=True)
-class Venue(models.Model):
+class Venue(models.Model):#hecho
     id = models.IntegerField(primary_key=True,unique=True,blank=False)
-    name = models.CharField(max_length=50,null=True)
+    name = models.CharField(max_length=55,null=True)
     link  = models.CharField(max_length=50,null=True)
     active = models.BooleanField(null=True)
     season = models.ForeignKey('Season',on_delete=models.CASCADE,null=True)
-class League(models.Model):
+class League(models.Model):#hecho
     id = models.IntegerField(primary_key=True, unique=True, blank=False)
     name = models.CharField(max_length=50, null=True)
     link = models.CharField(max_length=50, null=True)
@@ -63,7 +63,7 @@ class Division(models.Model):
     hasWildCard = models.BooleanField(null=True)
     sortOrder = models.IntegerField(null=True)
     active = models.BooleanField(null=True)
-class Sport(models.Model):
+class Sport(models.Model):#hecho
     id = models.IntegerField(primary_key=True, unique=True, blank=False)
     code = models.CharField(max_length=10,null=True)
     link = models.CharField(max_length=50, null=True)
@@ -71,7 +71,7 @@ class Sport(models.Model):
     abbreviation = models.CharField(max_length=10, null=True)
     sortOrder = models.IntegerField(null=True)
     activeStatus = models.BooleanField(null=True)
-class Season(models.Model):
+class Season(models.Model):#hecho
     seasonId = models.IntegerField(primary_key=True, unique=True, blank=False)
     hasWildcard = models.BooleanField(null=True)
     preSeasonStartDate = models.DateField(null=type)
@@ -93,6 +93,7 @@ class Season(models.Model):
     gameLevelGamedayType = models.CharField(max_length=1,null=type)
     qualifierPlateAppearances = models.FloatField(null=True)
     qualifierOutsPitched = models.FloatField(null=True)
+    sportId = models.ForeignKey('Sport', on_delete=models.CASCADE, null=True)
 class Player(models.Model):
     id = models.IntegerField(primary_key=True, unique=True, blank=False)
     fullName = models.CharField(max_length=50,null=True)
@@ -130,7 +131,7 @@ class Player(models.Model):
     fullLFMName = models.CharField(max_length=50,null=True)
     strikeZoneTop = models.FloatField(null=True)
     strikeZoneBottom = models.FloatField(null=True)
-class Position(models.Model):
+class Position(models.Model):#hecho
     shortName = models.TextField(max_length=50, null=True)
     fullName = models.TextField(max_length=50, null=True)
     abbrev = models.TextField(max_length=10,null=True)

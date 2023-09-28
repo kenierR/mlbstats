@@ -8,6 +8,58 @@ aux=MLB()
 
 def index(request):
     return render(request,'Stats/index.html',{})
+def updivisions(request):
+
+    return render(request,'Stats/updivisions.html',{})
+def upleagues(request):
+    league = sap.get('league', {'sportId': '', 'leagueIds': ''})['leagues']
+    sport = Sport()
+    for lg in league:
+        try:
+            season = Season.objects.get(pk=lg['seasonDateInfo']['seasonId'])
+            lg['season'] = season
+            del (lg['seasonDateInfo'])
+        except Season.DoesNotExist:
+            dbseason = Season(seasonId=lg['seasonDateInfo']['seasonId'])
+            dbseason.save()
+            season = Season.objects.get(pk=lg['seasonDateInfo']['seasonId'])
+            lg['season'] = season
+            del (lg['seasonDateInfo'])
+        try:
+            sport = Sport.objects.get(pk=lg['sport']['id'])
+        except Sport.DoesNotExist:
+            dbsport = Sport(id=lg['sport']['id'])
+            dbsport.save()
+            sport = Sport.objects.get(pk=lg['sport']['id'])
+        except:
+            sport = Sport(id=7777)
+
+
+
+        lg['sport']=sport
+        dbleague = League(**lg)
+        dbleague.save()
+    return render(request,'Stats/upleagues.html',{})
+def upvenues(request):
+    venue = sap.get('venue',{'venueIds':'','seasonId':2023})['venues']
+    for vn in venue:
+        season = Season(seasonId=vn['season'])
+        vn['season'] = season
+        dbvenue = Venue(**vn)
+        dbvenue.save()
+    return render(request,'Stats/upvenues.html',{})
+
+
+def upsports(request):
+    sport = sap.get('sports',{})['sports']
+    for sp in sport:
+            print(sp)
+        #try:
+            dbsport = Sport(**sp)
+            dbsport.save()
+        #except:
+            pass
+    return render(request,'Stats/upsports.html',{})
 
 def uppositions(request):
     pos = sap.meta('positions')
@@ -24,7 +76,9 @@ def upseasons(request):
         for seasonId in range(1900,2050):
             try:
                 season = sap.get('season',{'sportId':sport.id,'divisionId':'','leagueId':'','seasonId':seasonId})['seasons'][0]
+                season['sportId'] = sport.id
                 if len(season) > 0 :
+                    print(season['sportId'],season['seasonId'])
                     dbseason = Season(**season)
                     dbseason.save()
             except:
