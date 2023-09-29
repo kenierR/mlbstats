@@ -8,6 +8,58 @@ aux=MLB()
 
 def index(request):
     return render(request,'Stats/index.html',{})
+def upteams(request):
+    teams = sap.get('teams', {})['teams']
+    for tm in teams:
+        print(tm['teamName'],tm['id'])
+        try:
+            sprinleague = League.objects.get(pk=tm['springLeague']['id'])
+            tm['springLeague'] = sprinleague
+        except:
+            pass
+        try:
+            springvenue = Venue.objects.get(pk=tm['springVenue']['id'])
+            tm['springVenue']=springvenue
+        except:
+            pass
+
+        season = Season.objects.get(pk=tm['season'])
+        tm['season'] = season
+
+        try:
+            venue = Venue.objects.get(pk=tm['venue']['id'])
+            tm['venue'] = venue
+        except:
+            dbvenue = Venue(id=tm['venue']['id'])
+            dbvenue.save()
+            venue = Venue.objects.get(pk=tm['venue']['id'])
+            tm['venue'] = venue
+
+        try:
+            league = League.objects.get(pk=tm['league']['id'])
+            tm['league'] = league
+        except:
+            league = League(id=7777)
+            tm['league'] = league
+        try:
+            division = Division.objects.get(pk=tm['division']['id'])
+            tm['division'] = division
+        except :
+            division = Division(id=7777)
+            tm['division'] = division
+
+        try:
+            sport = Sport.objects.get(pk=tm['sport']['id'])
+            tm['sport'] = sport
+        except:
+            dbsport = Sport(id=tm['sport']['id'],name=tm['sport']['name'])
+            dbsport.save()
+            sport = Sport.objects.get(pk=tm['sport']['id'])
+            tm['sport'] = sport
+
+        dbteams = Teams(**tm)
+        dbteams.save()
+    return render(request,'Stats/upteams.html',{})
 def updivisions(request):
     divisions = sap.get('divisions', {})['divisions']
     for div in divisions:

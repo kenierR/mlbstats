@@ -3,7 +3,7 @@ import statsapi as sap
 from Stats.sources.mlbClasses import MLB
 # Create your models here.
 aux = MLB()
-class Teams(models.Model):
+class Teams(models.Model):#hecho
     allStarStatus = models.CharField(max_length=1,null=True)
     id = models.IntegerField(primary_key=True,unique=True,blank=False)
     name = models.CharField(max_length=50,null=True)
@@ -25,6 +25,8 @@ class Teams(models.Model):
     franchiseName = models.CharField(max_length=50,null=True)
     clubName = models.CharField(max_length=50,null=True)
     active = models.BooleanField(null=True)
+    springLeague = models.ForeignKey('League',on_delete=models.CASCADE,null=True,related_name='springLeague')
+    springVenue = models.ForeignKey('Venue',on_delete=models.CASCADE,null=True,related_name='springVenue')
 class Venue(models.Model):#hecho
     id = models.IntegerField(primary_key=True,unique=True,blank=False)
     name = models.CharField(max_length=55,null=True)
@@ -51,7 +53,7 @@ class League(models.Model):#hecho
     active = models.BooleanField(null=True)
     nameShort = models.CharField(max_length=50,null=True)
     seasonState = models.CharField(max_length=50,null=True)
-class Division(models.Model):
+class Division(models.Model):#hecho
     id = models.IntegerField(primary_key=True, unique=True, blank=False)
     name = models.CharField(max_length=50, null=True)
     season = models.ForeignKey('Season', on_delete=models.CASCADE, null=True)

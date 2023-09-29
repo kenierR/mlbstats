@@ -14,6 +14,7 @@ urlpatterns = [
     path('upsports/',views.upsports,name='upsports'),
     path('upvenues/',views.upvenues,name='upvenues'),
     path('upleagues/',views.upleagues,name='upleagues'),
-    path('updivisions/',views.updivisions,name='updivisions')
+    path('updivisions/',views.updivisions,name='updivisions'),
+    path('upteams/',views.upteams,name='upteams')
 ]
 
