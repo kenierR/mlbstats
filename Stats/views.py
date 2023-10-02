@@ -8,6 +8,51 @@ aux=MLB()
 
 def index(request):
     return render(request,'Stats/index.html',{})
+
+def upplayers(request):
+    sports = Sport.objects.all()
+    lsport = list(sports)
+    seasons = Season.objects.all()
+    lseasons = range(1960,2024)#list(seasons)
+    for season in lseasons:
+        for sport in lsport:
+            print('season',season,'sport',sport)
+            players = sap.get('sports_players', {'season': season, 'sportId': sport})['people']
+            #print(players['id'])
+            if len(players)>0:
+                for p in players:
+                    try:
+                        teams = Teams.objects.get(pk=p['currentTeam']['id'])
+                        print(p['fullName'],'si -----',p['id'])
+
+                    except Teams.DoesNotExist:
+                        print('salvado  ---------------------------***********------', season, sport,p['fullName'],'teams:',p['currentTeam']['id'])
+                        dbTeams = Teams(id=p['currentTeam']['id'],name=p['currentTeam']['name']).save()
+
+                    except Position.DoesNotExist:
+                        print('esa posicion no existe en bd',p['primaryPosition']['code'])
+
+                    finally:
+                        teams = Teams.objects.get(pk=p['currentTeam']['id'])
+                        positions = Position.objects.get(pk=p['primaryPosition']['code'])
+                        p['currentTeam'] = teams
+                        p['primaryPosition'] = positions
+                        try:
+                            p['batSide'] = p['batSide']['code']
+                        except :
+                            pass
+                        try:
+                            p['pitchHand'] = p['pitchHand']['code']
+                        except:
+                            pass
+                        dbplayer = Player(**p)
+                        dbplayer.save()
+
+
+            else:
+                print('no existen player en esa temporada para ese deporte',season,sport.id)
+
+    return render(request,'Stats/upplayers.html',{})
 def upteams(request):
     teams = sap.get('teams', {})['teams']
     for tm in teams:
@@ -113,8 +158,6 @@ def upvenues(request):
         dbvenue = Venue(**vn)
         dbvenue.save()
     return render(request,'Stats/upvenues.html',{})
-
-
 def upsports(request):
     sport = sap.get('sports',{})['sports']
     for sp in sport:
@@ -125,14 +168,12 @@ def upsports(request):
         #except:
             pass
     return render(request,'Stats/upsports.html',{})
-
 def uppositions(request):
     pos = sap.meta('positions')
     for x in pos :
         dbPos = Position(**x)
         dbPos.save()
     return render(request,'Stats/uppositions.html',{'pos':pos})
-
 def upseasons(request):
     sportIds = Sport.objects.all()
     lsport = list(sportIds)

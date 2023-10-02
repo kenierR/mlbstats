@@ -27,12 +27,18 @@ class Teams(models.Model):#hecho
     active = models.BooleanField(null=True)
     springLeague = models.ForeignKey('League',on_delete=models.CASCADE,null=True,related_name='springLeague')
     springVenue = models.ForeignKey('Venue',on_delete=models.CASCADE,null=True,related_name='springVenue')
+
+    def __str__(self):
+        return str(self.id)
 class Venue(models.Model):#hecho
     id = models.IntegerField(primary_key=True,unique=True,blank=False)
     name = models.CharField(max_length=55,null=True)
     link  = models.CharField(max_length=50,null=True)
     active = models.BooleanField(null=True)
     season = models.ForeignKey('Season',on_delete=models.CASCADE,null=True)
+
+    def __str__(self):
+        return str(self.id)
 class League(models.Model):#hecho
     id = models.IntegerField(primary_key=True, unique=True, blank=False)
     name = models.CharField(max_length=50, null=True)
@@ -53,6 +59,9 @@ class League(models.Model):#hecho
     active = models.BooleanField(null=True)
     nameShort = models.CharField(max_length=50,null=True)
     seasonState = models.CharField(max_length=50,null=True)
+
+    def __str__(self):
+        return str(self.id)
 class Division(models.Model):#hecho
     id = models.IntegerField(primary_key=True, unique=True, blank=False)
     name = models.CharField(max_length=50, null=True)
@@ -66,6 +75,9 @@ class Division(models.Model):#hecho
     sortOrder = models.IntegerField(null=True)
     numPlayoffTeams = models.IntegerField(null=True)
     active = models.BooleanField(null=True)
+
+    def __str__(self):
+        return str(self.id)
 class Sport(models.Model):#hecho
     id = models.IntegerField(primary_key=True, unique=True, blank=False)
     code = models.CharField(max_length=10,null=True)
@@ -74,6 +86,8 @@ class Sport(models.Model):#hecho
     abbreviation = models.CharField(max_length=10, null=True)
     sortOrder = models.IntegerField(null=True)
     activeStatus = models.BooleanField(null=True)
+    def __str__(self):
+        return str(self.id)
 class Season(models.Model):#hecho
     seasonId = models.IntegerField(primary_key=True, unique=True, blank=False)
     hasWildcard = models.BooleanField(null=True)
@@ -97,14 +111,18 @@ class Season(models.Model):#hecho
     qualifierPlateAppearances = models.FloatField(null=True)
     qualifierOutsPitched = models.FloatField(null=True)
     sportId = models.ForeignKey('Sport', on_delete=models.CASCADE, null=True)
+    def __str__(self):
+        return str(self.seasonId)
 class Player(models.Model):
     id = models.IntegerField(primary_key=True, unique=True, blank=False)
     fullName = models.CharField(max_length=50,null=True)
+    link = models.CharField(max_length=50,null=True)
     firstName = models.CharField(max_length=50,null=True)
     lastName = models.CharField(max_length=50,null=True)
     birthDate = models.CharField(max_length=50,null=True)
     currentAge = models.IntegerField(null=True)
     birthCity = models.CharField(max_length=50,null=True)
+    birthStateProvince = models.CharField(max_length=50,null=True)
     birthCountry = models.CharField(max_length=50,null=True)
     height = models.CharField(max_length=50,null=True)
     weight = models.IntegerField(null=True)
@@ -118,22 +136,36 @@ class Player(models.Model):
     boxscoreName = models.CharField(max_length=50,null=True)
     nickName = models.CharField(max_length=50,null=True)
     gender = models.CharField(max_length=1,null=True)
+    nameMatrilineal = models.CharField(max_length=50,null=True)
     isPlayer = models.BooleanField(null=True)
     isVerified = models.BooleanField(null=True)
+    draftYear = models.CharField(max_length=50,null=True)
+    deathDate = models.CharField(max_length=50,null=True)
+    deathCity = models.CharField(max_length=50,null=True)
+    deathStateProvince = models.CharField(max_length=50,null=True)
+    deathCountry = models.CharField(max_length=50,null=True)
+    lastPlayedDate = models.CharField(max_length=50,null=True)
     pronunciation = models.CharField(max_length=50,null=True)
     mlbDebutDate = models.CharField(max_length=50,null=True)
     batSide = models.CharField(max_length=1,null=True)
     pitchHand = models.CharField(max_length=1,null=True)
     nameFirstLast = models.CharField(max_length=50,null=True)
+    nameTitle = models.CharField(max_length=50,null=True)
+    namePrefix = models.CharField(max_length=50, null=True)
+    nameSuffix = models.CharField(max_length=50,null=True)
     nameSlug = models.CharField(max_length=50,null=True)
     firstLastName = models.CharField(max_length=50,null=True)
     lastFirstName = models.CharField(max_length=50,null=True)
     lastInitName = models.CharField(max_length=50,null=True)
     initLastName = models.CharField(max_length=50,null=True)
-    fullFMLName = models.CharField(max_length=50,null=True)
-    fullLFMName = models.CharField(max_length=50,null=True)
+    fullFMLName = models.CharField(max_length=100,null=True)
+    fullLFMName = models.CharField(max_length=100,null=True)
     strikeZoneTop = models.FloatField(null=True)
     strikeZoneBottom = models.FloatField(null=True)
+
+
+    def __str__(self):
+        return str(self.id)
 class Position(models.Model):#hecho
     shortName = models.TextField(max_length=50, null=True)
     fullName = models.TextField(max_length=50, null=True)
@@ -146,3 +178,5 @@ class Position(models.Model):#hecho
     gamePosition = models.BooleanField(null=True)
     fielder = models.BooleanField(null=True)
     outfield = models.BooleanField(null=True)
+    def __str__(self):
+        return self.fullName
