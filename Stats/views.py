@@ -2,13 +2,32 @@ from django.shortcuts import render
 from Stats.sources.mlbClasses import MLB
 import statsapi
 from Stats.models import *
+from .forms import TeamSelectForm
 # Create your views here.
 
 aux=MLB()
 
 def index(request):
     return render(request,'Stats/index.html',{})
+def up_team_season(request):
+    dbseason = Season.objects.all()
+    for season in dbseason:
+        teams = sap.get('teams', {'season': season.seasonId})['teams']
+        for team in teams:
+            try:
+                dbteam = Teams.objects.get(pk=team['id'])
+                dbteam.season.add(season)
+                print(team['id'], season,'sii')
+            except:
+                dbteam = Teams(id=team['id']).save()
+                dbteam = Teams.objects.get(pk=team['id'])
+                dbteam.season.add(season)
+                print(team['id'], season,'nooo')
 
+
+    return render(request,'Stats/up_team_season.html',{})
+def dashboard(request):
+    return render(request,'Stats/dashboard.html',{})
 def upplayers(request):
     sports = Sport.objects.all()
     lsport = list(sports)
@@ -144,8 +163,6 @@ def upleagues(request):
         except:
             sport = Sport(id=7777)
 
-
-
         lg['sport']=sport
         dbleague = League(**lg)
         dbleague.save()
@@ -191,12 +208,17 @@ def upseasons(request):
                 pass
 
     return render(request,'Stats/upseasons.html',{})
-
 def teams(request):
-
+    context = {}
     teams = aux.searchTeams_by_sportId(1)['teams']
-    return render(request,'Stats/teams.html',{'teams':teams})
-
+    form = TeamSelectForm(request.POST or None)
+    context['form'] = form
+    context['teams'] = teams
+    if request.POST:
+        if form.is_valid():
+            temp = form.cleaned_data.get("name")
+            print(temp)
+    return render(request,'Stats/teams.html',context)
 def players(request):
     listaplayer = list(x['fullName'] for x in aux.peoples)[0:10]
     print(listaplayer)
@@ -205,11 +227,8 @@ def players(request):
     stadisticas = aux.busca_lista_players_crit(crit,listaplayer)
     print((stadisticas))
     return render(request,'Stats/players.html', {'players':listaplayer,'stats':stadisticas})
-
 def teamdetails(request,id):
     listaplayer = list(x['fullName'] for x in aux.peoples)
-
-
     crit = ['runs', 'hits']
     stadisticas = aux.busca_lista_players_crit(crit, listaplayer)
     teamstats =aux.teamsStat(2023,1,id)

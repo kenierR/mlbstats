@@ -8,7 +8,7 @@ class Teams(models.Model):#hecho
     id = models.IntegerField(primary_key=True,unique=True,blank=False)
     name = models.CharField(max_length=50,null=True)
     link = models.CharField(max_length=50, null=True)
-    season = models.ForeignKey('Season',on_delete=models.CASCADE,null=True)
+    season = models.ManyToManyField('Season',null=True)
     venue = models.ForeignKey('Venue',on_delete=models.CASCADE,null=True)
     teamCode = models.CharField(max_length=10,null=True)
     fileCode = models.CharField(max_length=10,null=True)
@@ -180,3 +180,11 @@ class Position(models.Model):#hecho
     outfield = models.BooleanField(null=True)
     def __str__(self):
         return self.fullName
+class Roster(models.Model):
+    person =  models.ForeignKey('Player',on_delete=models.CASCADE,null=True)
+    jerseyNumber = models.TextField(max_length=5, null=True)
+    position = models.ForeignKey('Position',on_delete=models.CASCADE,null=True)
+    status = models.BooleanField(null=True)
+    season = models.ForeignKey('Season',on_delete=models.CASCADE,null=True)
+
+

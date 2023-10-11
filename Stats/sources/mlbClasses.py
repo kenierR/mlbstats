@@ -362,7 +362,7 @@ class MLB:#Clase de tipo singlenton, garantiza que exista una sola clase.
 
 
 
-aux = MLB()
+# aux = MLB()
 # personId = sap.lookup_player('Aaron Judge')[0]['id']
 # person = sap.player_stat_data(personId, group="[hitting,pitching,fielding]", type="season", sportId=1)
 
@@ -398,17 +398,17 @@ aux = MLB()
 #
 #     print(i['Lugar'],i['Meta'],i['Cantidad'])
 #
-# x=aux.criterio(aux.bat,'L')
-# x=aux.criterio(aux.trow,'L')
+# x=aux.criterio(aux.bat,'S')
+# x=aux.criterio(aux.trow,'R')
 # x=aux.criterio(aux.edad,'= 30')
 # # x=aux.criterio(aux.team,'Milwaukee Brewers')
 # x=aux.criterio(aux.div,'American League Central')
 # # x = aux.criterio(aux.pos,'P')
 # x = aux.criterio(aux.team,'Washington Nationals')
-# x=aux.criterio(aux.born,'USA')
+# x=aux.criterio(aux.NotBorn,'USA')
 
 # x=aux.criterio(aux.NotTeam,'Baltimore Orioles')
-#aux.Show()
+# aux.Show()
 
 # print(aux.searchTeamByID(4124))
 # print(aux.searchDivByTeamId(117))

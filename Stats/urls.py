@@ -16,6 +16,8 @@ urlpatterns = [
     path('upleagues/',views.upleagues,name='upleagues'),
     path('updivisions/',views.updivisions,name='updivisions'),
     path('upteams/',views.upteams,name='upteams'),
-    path('upplayers/',views.upplayers,name='upplayers')
+    path('upplayers/',views.upplayers,name='upplayers'),
+    path('dashboard/',views.dashboard,name='dashboard'),
+    path('up_team_season/',views.up_team_season,name='up_team_season'),
 ]
 
