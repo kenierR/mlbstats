@@ -19,5 +19,6 @@ urlpatterns = [
     path('upplayers/',views.upplayers,name='upplayers'),
     path('dashboard/',views.dashboard,name='dashboard'),
     path('up_team_season/',views.up_team_season,name='up_team_season'),
+    path('up_player_team/',views.up_player_team,name='up_player_team'),
 ]
 

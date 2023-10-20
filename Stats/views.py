@@ -2,13 +2,32 @@ from django.shortcuts import render
 from Stats.sources.mlbClasses import MLB
 import statsapi
 from Stats.models import *
-from .forms import TeamSelectForm
+#from .forms import TeamSelectForm
 # Create your views here.
 
 aux=MLB()
 
 def index(request):
     return render(request,'Stats/index.html',{})
+
+def up_player_team(request):
+    equipos = Teams.objects.filter(sport=1)
+    sea = Season.objects.all()
+    for t in equipos:
+        print(t.name,t.id)
+        for s in sea:
+            try:
+                roster = sap.get('team_roster',{'teamId':t.id,'season':s.seasonId,'rosterType':'fullSeason'})['roster']
+                for r in roster:
+                    print(r['person']['id'])
+                    player = Player.objects.get(pk=r['person']['id'])
+
+                    player.team.add(t)
+                    print(player.name,t.seasonId)
+            except:
+                print(t.id,t.name,s.seasonId,'NO tiene roster')
+
+    return render(request,'Stats/up_player_team.html',{})
 def up_team_season(request):
     dbseason = Season.objects.all()
     for season in dbseason:
@@ -23,8 +42,6 @@ def up_team_season(request):
                 dbteam = Teams.objects.get(pk=team['id'])
                 dbteam.season.add(season)
                 print(team['id'], season,'nooo')
-
-
     return render(request,'Stats/up_team_season.html',{})
 def dashboard(request):
     return render(request,'Stats/dashboard.html',{})
@@ -32,7 +49,7 @@ def upplayers(request):
     sports = Sport.objects.all()
     lsport = list(sports)
     seasons = Season.objects.all()
-    lseasons = range(1960,2024)#list(seasons)
+    lseasons = range(1900,2024)#list(seasons)
     for season in lseasons:
         for sport in lsport:
             print('season',season,'sport',sport)
@@ -41,20 +58,18 @@ def upplayers(request):
             if len(players)>0:
                 for p in players:
                     try:
-                        teams = Teams.objects.get(pk=p['currentTeam']['id'])
+                        teams = Teams.objects.get(pk=p['team']['id'])
                         print(p['fullName'],'si -----',p['id'])
-
                     except Teams.DoesNotExist:
-                        print('salvado  ---------------------------***********------', season, sport,p['fullName'],'teams:',p['currentTeam']['id'])
-                        dbTeams = Teams(id=p['currentTeam']['id'],name=p['currentTeam']['name']).save()
+                        print('salvado  ---------------------------***********------', season, sport,p['fullName'],'teams:',p['team']['id'])
+                        dbTeams = Teams(id=p['team']['id'],name=p['team']['name']).save()
 
                     except Position.DoesNotExist:
                         print('esa posicion no existe en bd',p['primaryPosition']['code'])
-
                     finally:
-                        teams = Teams.objects.get(pk=p['currentTeam']['id'])
+                        teams = Teams.objects.get(pk=p['team']['id'])
                         positions = Position.objects.get(pk=p['primaryPosition']['code'])
-                        p['currentTeam'] = teams
+                        p['team'] = teams
                         p['primaryPosition'] = positions
                         try:
                             p['batSide'] = p['batSide']['code']
@@ -66,8 +81,6 @@ def upplayers(request):
                             pass
                         dbplayer = Player(**p)
                         dbplayer.save()
-
-
             else:
                 print('no existen player en esa temporada para ese deporte',season,sport.id)
 
@@ -195,17 +208,20 @@ def upseasons(request):
     sportIds = Sport.objects.all()
     lsport = list(sportIds)
     #print(lsport[0].id)
-    for sport in lsport:
-        for seasonId in range(1900,2050):
+    for sp in lsport:
+        for seasonId in range(1900,2025):
             try:
-                season = sap.get('season',{'sportId':sport.id,'divisionId':'','leagueId':'','seasonId':seasonId})['seasons'][0]
-                season['sportId'] = sport.id
+                season = sap.get('season',{'sportId':sp.id,'divisionId':'','leagueId':'','seasonId':seasonId})['seasons'][0]
+                #season['sportId'] = sp
+                print(sp.id, seasonId,'....')
                 if len(season) > 0 :
-                    print(season['sportId'],season['seasonId'])
-                    dbseason = Season(**season)
-                    dbseason.save()
+                    dbseason = Season(seasonId=seasonId).save()
+                    del(season['seasonId'])
+                    dbseason = Season.objects.get(seasonId=seasonId)
+                    dbseason.sportId.add(sp,through_defaults=season)
+                    print(sp.id, seasonId,'saved..')
             except:
-                pass
+                print(sp.id, seasonId,'erorr....')
 
     return render(request,'Stats/upseasons.html',{})
 def teams(request):
