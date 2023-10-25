@@ -86,56 +86,100 @@ def upplayers(request):
 
     return render(request,'Stats/upplayers.html',{})
 def upteams(request):
-    teams = sap.get('teams', {})['teams']
-    for tm in teams:
-        print(tm['teamName'],tm['id'])
-        try:
-            sprinleague = League.objects.get(pk=tm['springLeague']['id'])
-            tm['springLeague'] = sprinleague
-        except:
-            pass
-        try:
-            springvenue = Venue.objects.get(pk=tm['springVenue']['id'])
-            tm['springVenue']=springvenue
-        except:
-            pass
+    sea = Season.objects.all()
+    for s in sea:
+        teams = sap.get('teams', {'season':s})['teams']
+        for tm in teams:
+            print(s.seasonId)
+            try:
+                print(tm['name'],tm['id'],'-> Working..........')
+            except:
+                pass
 
-        season = Season.objects.get(pk=tm['season'])
-        tm['season'] = season
+            try:
+                sprinleague = League.objects.get(pk=tm['springLeague']['id'])
+                tm['springLeague'] = sprinleague
+                print('tiene springLeague.')
+            except:
+                print('No tiene springLeague','Saliendo......')
 
-        try:
-            venue = Venue.objects.get(pk=tm['venue']['id'])
-            tm['venue'] = venue
-        except:
-            dbvenue = Venue(id=tm['venue']['id'])
-            dbvenue.save()
-            venue = Venue.objects.get(pk=tm['venue']['id'])
-            tm['venue'] = venue
+            try:
+                springvenue = Venue.objects.get(pk=tm['springVenue']['id'])
+                tm['springVenue']=springvenue
+                print('tiene springVenue')
+            except:
+                print('No tiene springVenue','Saliendo......')
 
-        try:
-            league = League.objects.get(pk=tm['league']['id'])
-            tm['league'] = league
-        except:
-            league = League(id=7777)
-            tm['league'] = league
-        try:
-            division = Division.objects.get(pk=tm['division']['id'])
-            tm['division'] = division
-        except :
-            division = Division(id=7777)
-            tm['division'] = division
+            #season = Season.objects.get(pk=tm['season'])
+            #tm['season'] = s
 
-        try:
-            sport = Sport.objects.get(pk=tm['sport']['id'])
-            tm['sport'] = sport
-        except:
-            dbsport = Sport(id=tm['sport']['id'],name=tm['sport']['name'])
-            dbsport.save()
-            sport = Sport.objects.get(pk=tm['sport']['id'])
-            tm['sport'] = sport
+            try:
+                del(tm['conference'])
+            except:
+                pass
 
-        dbteams = Teams(**tm)
-        dbteams.save()
+
+            try:
+                venue = Venue.objects.get(pk=tm['venue']['id'])
+                tm['venue'] = venue
+                print('tiene venue.')
+            except Venue.DoesNotExist:
+                dbvenue = Venue(id=tm['venue']['id'])
+                dbvenue.save()
+                venue = Venue.objects.get(pk=tm['venue']['id'])
+                tm['venue'] = venue
+                print('No tiene venue', 'Saliendo......')
+            except KeyError:
+                pass
+
+
+            try:
+                league = League.objects.get(pk=tm['league']['id'])
+                tm['league'] = league
+                print('tiene league.')
+            except:
+                league = League(id=7777)
+                tm['league'] = league
+                print('No tiene league', 'Saliendo......')
+
+            try:
+                division = Division.objects.get(pk=tm['division']['id'])
+                tm['division'] = division
+                print('tiene division.')
+            except :
+                division = Division(id=7777)
+                tm['division'] = division
+                print('No tiene division', 'Saliendo......')
+
+            try:
+                sport = Sport.objects.get(pk=tm['sport']['id'])
+                print('sport: ',sport.id,': Existe en la base de datos...')
+                try:
+                    tm['sport'] = sport
+                    print('sport: ',sport.id,': Existe en la bd y se agrega el sport')
+                except:
+                    del(tm['sport'])
+                    print(sport.id, 'No existe el sport y se elimia')
+
+            except :
+                try:
+                    print('sport: ',sport.id,'No existe en la bd y se agrega')
+                    dbsport = Sport(id=tm['sport']['id'], name=tm['sport']['name']).save()
+                    sport = Sport.objects.get(pk=tm['sport']['id'])
+                    tm['sport'] = sport
+                    print('No tiene sport', '......')
+                except:
+                    print('sport: ',sport.id,'No esta en la bd y no existe el sport ')
+
+
+
+
+            del(tm['season'])
+            dbteams = Teams(**tm).save()
+            dbteams = Teams.objects.get(pk=tm['id'])
+            print(s.seasonId)
+            dbteams.season.add(s)
+
     return render(request,'Stats/upteams.html',{})
 def updivisions(request):
     divisions = sap.get('divisions', {})['divisions']

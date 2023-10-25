@@ -13,23 +13,23 @@ class Teams(models.Model):#hecho
     sport = models.ForeignKey('Sport', on_delete=models.CASCADE, null=True)
     springLeague = models.ForeignKey('League', on_delete=models.CASCADE, null=True, related_name='springLeague')
     springVenue = models.ForeignKey('Venue', on_delete=models.CASCADE, null=True, related_name='springVenue')
-    allStarStatus = models.CharField(max_length=1,null=True)
-    link = models.CharField(max_length=50, null=True)
-    teamCode = models.CharField(max_length=10,null=True)
-    fileCode = models.CharField(max_length=10,null=True)
-    abbreviation = models.CharField(max_length=10,null=True)
-    teamName = models.CharField(max_length=50,null=True)
-    locationName = models.CharField(max_length=50,null=True)
-    firstYearOfPlay = models.CharField(max_length=4,null=True)
-    shortName = models.CharField(max_length=50,null=True)
-    parentOrgName = models.CharField(max_length=50,null=True)
-    parentOrgId = models.IntegerField(null=True)
-    franchiseName = models.CharField(max_length=50,null=True)
-    clubName = models.CharField(max_length=50,null=True)
-    active = models.BooleanField(null=True)
+    allStarStatus = models.CharField(max_length=1,null=True,blank=True)
+    link = models.CharField(max_length=50, null=True,blank=True)
+    teamCode = models.CharField(max_length=10,null=True,blank=True)
+    fileCode = models.CharField(max_length=10,null=True,blank=True)
+    abbreviation = models.CharField(max_length=10,null=True,blank=True)
+    teamName = models.CharField(max_length=50,null=True,blank=True)
+    locationName = models.CharField(max_length=50,null=True,blank=True)
+    firstYearOfPlay = models.CharField(max_length=4,null=True,blank=True)
+    shortName = models.CharField(max_length=50,null=True,blank=True)
+    parentOrgName = models.CharField(max_length=50,null=True,blank=True)
+    parentOrgId = models.IntegerField(null=True,blank=True)
+    franchiseName = models.CharField(max_length=50,null=True,blank=True)
+    clubName = models.CharField(max_length=50,null=True,blank=True)
+    active = models.BooleanField(null=True,blank=True)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.id) +'  '+ self.name
 class Venue(models.Model):#hecho
     id = models.IntegerField(primary_key=True,unique=True,blank=False)
     name = models.CharField(max_length=55,null=True)
@@ -37,7 +37,7 @@ class Venue(models.Model):#hecho
     active = models.BooleanField(null=True)
     season = models.ForeignKey('Season',on_delete=models.CASCADE,null=True)
     def __str__(self):
-        return str(self.id)
+        return str(self.id) +'  '+ self.name
 class League(models.Model):#hecho
     id = models.IntegerField(primary_key=True, unique=True, blank=False)
     name = models.CharField(max_length=50, null=True)
@@ -60,7 +60,7 @@ class League(models.Model):#hecho
     seasonState = models.CharField(max_length=50,null=True)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.id) +'  '+ self.name
 class Division(models.Model):#hecho
     id = models.IntegerField(primary_key=True, unique=True, blank=False)
     name = models.CharField(max_length=50, null=True)
@@ -76,7 +76,7 @@ class Division(models.Model):#hecho
     active = models.BooleanField(null=True)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.id) +'  '+ self.name
 class Sport(models.Model):#hecho
     id = models.IntegerField(primary_key=True, unique=True, blank=False)
     code = models.CharField(max_length=10,null=True)
@@ -86,7 +86,11 @@ class Sport(models.Model):#hecho
     sortOrder = models.IntegerField(null=True)
     activeStatus = models.BooleanField(null=True)
     def __str__(self):
-        return str(self.id)
+        if type(self.name) == type('') :
+            aux = str(self.id) + '-->' + self.name
+        else :
+            aux = str(self.id)
+        return aux
 class Season(models.Model):#hecho
     seasonId = models.IntegerField(primary_key=True, blank=False)
     sportId = models.ManyToManyField('Sport',through='SeasonSportDate')
@@ -116,8 +120,13 @@ class Season(models.Model):#hecho
         qualifierPlateAppearances = models.FloatField(null=True)
         qualifierOutsPitched = models.FloatField(null=True)
 
+        def __str__(self):
+            return str(self.seasonId) + '-->' + str(self.sportId)
+
 class Player(models.Model):
     id = models.IntegerField(primary_key=True, unique=True, blank=False)
+    team = models.ManyToManyField('Teams', null=True)
+    primaryPosition = models.ForeignKey('Position', on_delete=models.CASCADE, null=True)
     fullName = models.CharField(max_length=50,null=True)
     link = models.CharField(max_length=50,null=True)
     firstName = models.CharField(max_length=50,null=True)
@@ -131,8 +140,6 @@ class Player(models.Model):
     weight = models.IntegerField(null=True)
     active = models.BooleanField(null=True)
     primaryNumber = models.CharField(max_length=3,null=True)
-    team = models.ManyToManyField('Teams',null=True)
-    primaryPosition = models.ForeignKey('Position',on_delete=models.CASCADE,null=True)
     useName = models.CharField(max_length=50,null=True)
     useLastName = models.CharField(max_length=50,null=True)
     middleName = models.CharField(max_length=50,null=True)
