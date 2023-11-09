@@ -126,6 +126,7 @@ class Season(models.Model):#hecho
 class Player(models.Model):
     id = models.IntegerField(primary_key=True, unique=True, blank=False)
     team = models.ManyToManyField('Teams', null=True)
+    season = models.ManyToManyField('Season', null=True)
     primaryPosition = models.ForeignKey('Position', on_delete=models.CASCADE, null=True)
     fullName = models.CharField(max_length=50,null=True)
     link = models.CharField(max_length=50,null=True)

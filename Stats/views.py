@@ -2,6 +2,8 @@ from django.shortcuts import render
 from Stats.sources.mlbClasses import MLB
 import statsapi
 from Stats.models import *
+
+
 #from .forms import TeamSelectForm
 # Create your views here.
 
@@ -47,40 +49,54 @@ def dashboard(request):
     return render(request,'Stats/dashboard.html',{})
 def upplayers(request):
     sports = Sport.objects.all()
-    lsport = list(sports)
+    #lsport = list(sports)
     seasons = Season.objects.all()
-    lseasons = range(1900,2024)#list(seasons)
+    lseasons = range(2019,2024)#list(seasons)
     for season in lseasons:
-        for sport in lsport:
-            print('season',season,'sport',sport)
-            players = sap.get('sports_players', {'season': season, 'sportId': sport})['people']
+        for sport in sports:
+            print('season',season,'sport',sport.id)
+            players = sap.get('sports_players', {'season': season, 'sportId': sport.id})['people']
+            team = ''
             #print(players['id'])
             if len(players)>0:
                 for p in players:
+                    print(p['fullName'])
+                    #print(p)
                     try:
-                        teams = Teams.objects.get(pk=p['team']['id'])
-                        print(p['fullName'],'si -----',p['id'])
+                        team = Teams.objects.get(pk=p['currentTeam']['id'])
+                        del(p['currentTeam'])
+                        print(p['fullName'],'si -----',p['id'],season,sport)
+                    except KeyError:
+                        pos = Position.objects.get(pk=p['primaryPosition']['code'])
+                        p['primaryPosition'] = pos
                     except Teams.DoesNotExist:
-                        print('salvado  ---------------------------***********------', season, sport,p['fullName'],'teams:',p['team']['id'])
-                        dbTeams = Teams(id=p['team']['id'],name=p['team']['name']).save()
-
-                    except Position.DoesNotExist:
-                        print('esa posicion no existe en bd',p['primaryPosition']['code'])
-                    finally:
-                        teams = Teams.objects.get(pk=p['team']['id'])
-                        positions = Position.objects.get(pk=p['primaryPosition']['code'])
-                        p['team'] = teams
-                        p['primaryPosition'] = positions
                         try:
-                            p['batSide'] = p['batSide']['code']
-                        except :
-                            pass
-                        try:
-                            p['pitchHand'] = p['pitchHand']['code']
+                            team = Teams(id=p['currentTeam']['id'],name=p['currentTeam']['name']).save()
                         except:
-                            pass
-                        dbplayer = Player(**p)
-                        dbplayer.save()
+                            team = Teams.objects.get(pk=77777)
+                        finally:
+                            del(p['currentTeam'])
+                    finally:
+                        pos = Position.objects.get(pk=p['primaryPosition']['code'])
+                        p['primaryPosition'] = pos
+
+                    try:
+                        p['batSide'] = p['batSide']['code']
+                    except:
+                        pass
+
+                    try:
+                        p['pitchHand'] = p['pitchHand']['code']
+                    except:
+                        pass
+
+
+                    Player(**p).save()
+                    pl = Player.objects.get(pk=p['id'])
+                    print(team)
+                    pl.team.add(team)
+                    pl.season.add(season)
+
             else:
                 print('no existen player en esa temporada para ese deporte',season,sport.id)
 

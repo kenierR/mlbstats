@@ -17,10 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from Stats import urls
-from Stats import views
+from Crypto import urls
+
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('stats/',include(urls)),
+    path('crypto/',include(urls)),
 ]
