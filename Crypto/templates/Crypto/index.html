@@ -1,10 +1,72 @@
-<!DOCTYPE html>
-<html lang="en">
+{% load static %}
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Index</title>
+<title> Portal web - aprenderaprogramar.com </title> <meta charset="utf-8">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
 </head>
 <body>
-    Esta es la pagina index de crypto
+{{precios.last}}
+
+
+
+<canvas id="graph"></canvas>
+
+<script>
+{{precios.1}}
+var x = '{{ precios | safe }}';
+var t = '{{ tiempo  | escapejs }}';
+var tp = '{{ top | safe  }}';
+var btcbalance = '{{ btc_balance | safe  }}';
+
+    precios = JSON.parse(x);
+    tops    = JSON.parse(tp);
+    btcbal     = JSON.parse(btcbalance);
+    var replace= t.replace(/[\[\]]/g,'');
+    var tiempo = replace.split(',');
+
+console.log(tp)
+
+const labels = tiempo;
+
+
+const dataset1 = {
+    label: "Dataset 1",
+    data: precios,
+    borderColor: 'rgba(248, 37, 37, 0.8)',
+    fill: false,
+    tension: 0.2
+};
+
+const dataset2 = {
+    label: "Dataset 2",
+    data: tops,
+    borderColor: 'rgba(69, 248, 84, 0.8)',
+    fill: false,
+    tension: 0.1
+};
+
+const dataset3 = {
+    label: "Dataset 3",
+    data: btcbal,
+    borderColor: 'rgba(69, 140, 248, 0.8)',
+    fill: false,
+    tension: 0.1
+};
+
+const graph = document.querySelector("#graph");
+
+const data = {
+    labels: labels,
+    datasets: [dataset1,dataset2,dataset3]
+};
+
+const config = {
+    type: 'line',
+    data: data,
+};
+
+new Chart(graph, config);
+</script>
+<script>setInterval("location.reload()",3000);</script>
 </body>
 </html>
