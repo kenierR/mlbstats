@@ -9,8 +9,9 @@ precios = []
 tiempo = []
 top = []
 btc_bal = []
+btc_to_buy = []
 def index(request):
-    precio_compra = 35451
+    precio_compra = 36800
     content = {}
     sp = CB()
     spot = sp.spot()
@@ -24,14 +25,20 @@ def index(request):
     print(top)
 
     #obtener valance
-    btc_balance = sp.btc_balance(precio_compra,50)
-    btc_bal.append(btc_balance)
-    print('balance:',btc_balance)
+    btc_balance_inc = sp.btc_balance_inc(precio_compra,100)
+    btc_balance_dec = sp.btc_balance_inc(precio_compra,-100)
+    btc_bal.append(btc_balance_inc)
+    btc_to_buy.append(btc_balance_dec)
+    print('balance:',btc_balance_inc)
+    btc_balance = sp.btc_balance()
 
 
-    content['precios'] = precios[-1200:]
-    content['tiempo']  = tiempo[-1200:]
-    content['top'] = top[-1200:]
-    content['btc_balance'] = btc_bal[-1200:]
+    content['precios'] = precios[-200:]
+    content['tiempo']  = tiempo[-200:]
+    content['top'] = top[-200:]
+    content['btc_balance_inc'] = btc_bal[-200:]
+    content['btc_balance'] = float(btc_balance)
+    content['btc_to_buy'] = btc_to_buy[-200:]
+
     #print(content['precios'])
     return render(request,'Crypto/index.html',content)

@@ -5,22 +5,30 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
 </head>
 <body>
-{{precios.last}}
+<div>
+    <h4>Ultimo precio</h4>
+    {{precios|last}}
+
+    <h4>BTC Balance</h4>
+    {{btc_balance}}
+</div>
+
 
 
 
 <canvas id="graph"></canvas>
 
 <script>
-{{precios.1}}
+
 var x = '{{ precios | safe }}';
 var t = '{{ tiempo  | escapejs }}';
 var tp = '{{ top | safe  }}';
-var btcbalance = '{{ btc_balance | safe  }}';
-
+var btcbalance_inc = '{{ btc_balance_inc | safe  }}';
+var btcbalance_dec = '{{btc_to_buy | safe }}'
     precios = JSON.parse(x);
     tops    = JSON.parse(tp);
-    btcbal     = JSON.parse(btcbalance);
+    btcbal     = JSON.parse(btcbalance_inc);
+    btcdec = JSON.parse(btcbalance_dec)
     var replace= t.replace(/[\[\]]/g,'');
     var tiempo = replace.split(',');
 
@@ -30,15 +38,15 @@ const labels = tiempo;
 
 
 const dataset1 = {
-    label: "Dataset 1",
+    label: "BTC SPOT",
     data: precios,
     borderColor: 'rgba(248, 37, 37, 0.8)',
     fill: false,
-    tension: 0.2
+    tension: 0.1
 };
 
 const dataset2 = {
-    label: "Dataset 2",
+    label: "Ultima Compra",
     data: tops,
     borderColor: 'rgba(69, 248, 84, 0.8)',
     fill: false,
@@ -46,18 +54,24 @@ const dataset2 = {
 };
 
 const dataset3 = {
-    label: "Dataset 3",
+    label: "Ganancia",
     data: btcbal,
     borderColor: 'rgba(69, 140, 248, 0.8)',
     fill: false,
     tension: 0.1
 };
-
+const dataset4 = {
+    label: "posible compra",
+    data: btcdec,
+    borderColor: 'rgba(45, 135, 148, 0.8)',
+    fill: false,
+    tension: 0.1
+};
 const graph = document.querySelector("#graph");
 
 const data = {
     labels: labels,
-    datasets: [dataset1,dataset2,dataset3]
+    datasets: [dataset1,dataset2,dataset3,dataset4]
 };
 
 const config = {
