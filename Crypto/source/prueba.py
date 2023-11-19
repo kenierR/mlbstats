@@ -1,19 +1,23 @@
-from coinbase.wallet.client import Client
-from Crypto.source.cb import CB
-import pandas as pd
-# coinbase_API_key = "6xLCMtGOQPiitK5O"
-# coinbase_API_secret = "OdgFYrpVfgZ3XnRpZ7mchTN8AqFKu9Kp"
-#
-# client = Client(coinbase_API_key, coinbase_API_secret)
-#
-# precioCompra = client.get_buy_price()
-# precioVenta = client.get_sell_price()
-# precioSpot  = client.get_spot_price()
-# print('compra:',precioCompra['amount'])
-# print('venta :',precioVenta['amount'])
-# print('spot  :',precioSpot['amount'])
+import http.client
+import json
+import json, hmac, hashlib, time, base64,os
 
+conn = http.client.HTTPSConnection("api.coinbase.com")
+timestamp = str(int(time.time()))
+method = 'GET'
+request_path = '/api/v3/brokerage/products/BTC-USD/ticker'
+body = ''
+payload = timestamp+method+request_path+body
+signature = hmac.new(os.environ.get('coinbase_API_secret').encode('utf-8'), payload.encode('utf-8'), digestmod=hashlib.sha256).digest()
 
-
-aux = CB()
-print(aux.spot()['amount'])
+headers = {
+  'Content-Type': 'application/json',
+  'cb-access-key': os.environ.get('coinbase_API_key'),
+  'cb-access-passphrase': os.environ.get('coinbase_API_secret'),
+  'cb-access-sign': signature,
+  'cb-access-timestamp': timestamp
+}
+conn.request("GET", "/api/v3/brokerage/accounts?limit=2", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))

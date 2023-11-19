@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="container">
-<div class="row">
+<div class="row"  style="background-color: #ccb;">
     <div class="col">
         <h5 class="text-primary">Ultimo precio</h5>
         <a class="text-success">{{precios|last}}</a>
@@ -26,12 +26,16 @@
         <a class="text-success">{{total_balance}}</a>
     </div>
 </div>
-    <div class="vr"></div>
+    <div class="row">
+        otro
+    </div>
+</div>
+<div class="vr"></div>
 
 
 
 
-<canvas id="graph"></canvas>
+<canvas class=""  id="graph"></canvas>
 
 <script>
 
@@ -96,8 +100,8 @@ const config = {
 
 new Chart(graph, config);
  </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script>setInterval("location.reload()",5000);</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script>setInterval("location.reload()",5000);</script>
 
 </div>
 </body>
