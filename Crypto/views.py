@@ -41,5 +41,6 @@ def index(request):
     content['btc_to_buy'] = btc_to_buy[-time_len:]
     content['usd_balance'] = sp.usd_balance()
     content['total_balance'] = total_balane
+    content['btc_satoshis'] = sp.btc_satoshis()
     #print(content['precios'])
     return render(request,'Crypto/index.html',content)

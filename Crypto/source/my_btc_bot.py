@@ -6,7 +6,7 @@ import http.client
 import os,json
 import uuid
 
-class my_cb_apis():
+class my_btc_bot():
   def __init__(self):
       self.conn = http.client.HTTPSConnection("api.coinbase.com")
       self.api_key = os.environ.get('coinbase_API_key')
@@ -23,11 +23,11 @@ class my_cb_apis():
       'CB-ACCESS-TIMESTAMP': timestamp,
       'CB-ACCESS-SIGN': signature
     }
-
     conn.request(method, request_path, payload, headers)
     res = conn.getresponse()
     data = res.read()
     print(data.decode("utf-8"))
+
 
 payload = json.dumps({
   "client_order_id": str(uuid.uuid4()),
@@ -41,7 +41,7 @@ payload = json.dumps({
   }
 })
 
-aux = my_cb_apis()
+aux = my_btc_bot()
 aux.Update('POST',request_path = "/api/v3/brokerage/orders",payload=payload)
 
 

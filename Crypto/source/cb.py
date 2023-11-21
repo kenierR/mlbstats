@@ -22,3 +22,5 @@ class CB:
         return "{:.2f}".format(balance)
     def usd_balance(self):
         return "{:.2f}".format(float(self.client.get_account('USD')['balance']['amount']))
+    def btc_satoshis(self):
+        return float(self.client.get_primary_account()['balance']['amount'])

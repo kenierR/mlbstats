@@ -25,6 +25,10 @@
         <h5 class="text-primary">Total Balance</h5>
         <a class="text-success">{{total_balance}}</a>
     </div>
+    <div class="col">
+        <h5 class="text-primary">Total BTC</h5>
+        <a class="text-success">{{btc_satoshis}}</a>
+    </div>
 </div>
     <div class="row">
         otro
@@ -48,8 +52,9 @@ var btcbalance_dec = '{{btc_to_buy | safe }}'
     tops    = JSON.parse(tp);
     btcbal     = JSON.parse(btcbalance_inc);
     btcdec = JSON.parse(btcbalance_dec)
-    var replace= t.replace(/[\[\]]/g,'');
-    var tiempo = replace.split(',');
+var replace= t.replace(/[\[\]]/g,'');
+var tiempo = replace.split(',');
+
 
 console.log(tp)
 
