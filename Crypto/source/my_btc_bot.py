@@ -169,7 +169,7 @@ class my_btc_bot():
         else:
             return 'Error:you need update data'
         return json.loads(data.decode("utf-8"))
-aux = my_btc_bot()
+#aux = my_btc_bot()
 #print(aux.set_order_limit('SELL',0.00002,50000)['order_id']) #"79370bfc-8cb4-4cbd-9c58-84c90e226968"
 #print(aux.set_order_limit('BUY',0.00002,1000)['order_id'])
 #"0b10d4d0-2f3e-4fd9-947b-01a6f36e8de7"
