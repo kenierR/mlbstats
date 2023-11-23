@@ -3,44 +3,37 @@ from django.shortcuts import render
 from Crypto.source.cb import CB
 from datetime import date
 from datetime import datetime
+from Crypto.source.Bot import Bot
 # Create your views here.
-
+bot = Bot()
 precios = []
 tiempo = []
-top = []
+list_prec_comp = []
+list_prec_venta = []
 btc_bal = []
 btc_to_buy = []
+
 def index(request):
-    precio_compra = 36800
+    bot.update_order()
+    precio_compra = bot.Mbb.get_list_orders('BUY' ,'OPEN')[0]['order_configuration']['limit_limit_gtc']['limit_price']
+    precio_venta =  bot.Mbb.get_list_orders('SELL','OPEN')[0]['order_configuration']['limit_limit_gtc']['limit_price']
     rango = 100
     time_len = 200
     content = {}
-    sp = CB()
-    spot = sp.spot()
-    #precios.insert(len(spot),spot)
+
+    spot = bot.Mbb.get_product()['price']
     precios.append(float(spot))
     now = datetime.now()
     t = str(now.hour) + ':' + str(now.minute) + ':' + str(now.second)
     tiempo.append(t)
-    top.append(float(precio_compra))
-
-    #obtener valance
-    btc_balance_inc = sp.btc_balance_inc(precio_compra,rango)
-    btc_balance_dec = sp.btc_balance_inc(precio_compra,-rango)
-    btc_bal.append(btc_balance_inc)
-    btc_to_buy.append(btc_balance_dec)
-    btc_balance = sp.btc_balance()
-    total_balane = float(btc_balance) + float(sp.usd_balance())
-
-
+    list_prec_comp.append(float(precio_compra))
+    list_prec_venta.append(float(precio_venta))
     content['precios'] = precios[-time_len:]
     content['tiempo']  = tiempo[-time_len:]
-    content['top'] = top[-time_len:]
+    content['list_prec_comp'] = list_prec_comp[-time_len:]
+    content['list_prec_venta'] = list_prec_venta[-time_len:]
+
     content['btc_balance_inc'] = btc_bal[-time_len:]
-    content['btc_balance'] = btc_balance
     content['btc_to_buy'] = btc_to_buy[-time_len:]
-    content['usd_balance'] = sp.usd_balance()
-    content['total_balance'] = total_balane
-    content['btc_satoshis'] = sp.btc_satoshis()
-    #print(content['precios'])
+
     return render(request,'Crypto/index.html',content)
