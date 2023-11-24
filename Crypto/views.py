@@ -39,6 +39,9 @@ def index(request):
     content['list_prec_comp'] = list_prec_comp[-time_len:]
     content['list_prec_venta'] = list_prec_venta[-time_len:]
     content['btc_balance'] = bot.Mbb.btc_balance()
+    content['usd_balance'] = bot.Mbb.usd_balance()
+    content['total_balance'] = round(content['btc_balance'] + content['usd_balance'],2)
+    content['btc_amount'] = bot.Mbb.btc_amount()
 
 
 
