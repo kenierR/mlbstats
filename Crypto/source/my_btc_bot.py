@@ -169,16 +169,37 @@ class my_btc_bot():
         else:
             return 'Error:you need update data'
         return json.loads(data.decode("utf-8"))
-#aux = my_btc_bot()
+    def get_account(self,id):
+        request_path = "/api/v3/brokerage/accounts/{product_id}".format(product_id = id)
+        payload = ''
+        self.Update('GET', request_path, payload)
+        if self._updated:
+            self.conn.request(self.method, self.request_path, self.payload, self.headers)
+            res = self.conn.getresponse()
+            data = res.read()
+        else:
+            return 'Error:you need update data'
+        return json.loads(data.decode("utf-8"))
+    def btc_balance(self):
+        available = float(aux.get_account('ff267349-56de-57c6-a3cf-059e2502e05e')['account']['available_balance']['value'])
+        hold = float(aux.get_account('ff267349-56de-57c6-a3cf-059e2502e05e')['account']['hold']['value'])
+
+aux = my_btc_bot()
 #print(aux.set_order_limit('SELL',0.00002,50000)['order_id']) #"79370bfc-8cb4-4cbd-9c58-84c90e226968"
 #print(aux.set_order_limit('BUY',0.00002,1000)['order_id'])
 #"0b10d4d0-2f3e-4fd9-947b-01a6f36e8de7"
 #print(aux.set_cancel_order(id='0b10d4d0-2f3e-4fd9-947b-01a6f36e8de7'))
 #print(aux.set_edit_limit_order("0b10d4d0-2f3e-4fd9-947b-01a6f36e8de7",'50000','0.0004'))
 #print(aux.set_edit_limit_order("d4fb1ad5-0f39-46fb-859c-92c7ddcc2d27",'50000','0.0004'))
-#print(json.loads(aux.get_order('d4fb1ad5-0f39-46fb-859c-92c7ddcc2d27')))#['order']['order_configuration'])
+#print(aux.get_order('59fa5ace-5bc8-47a2-bb7e-34761ab6d0a5')['order']['order_configuration']['limit_limit_gtc']['limit_price'])#['order']['order_configuration'])
 #print(json.loads(aux.get_fills_orders())['fills'][0]['side']) #ultima orden
-#print(aux.get_product()['price'])
+#print(aux.get_product())
 #print(aux.get_list_orders('SELL','OPEN')[0]['order_configuration']['limit_limit_gtc']['limit_price']) # obtiene lista de ordernes por side y status
 #print(aux.get_list_orders('SELL','OPEN')[0]['status'])
 #print(aux.cancel_all_orders())
+a = float(aux.get_account('ff267349-56de-57c6-a3cf-059e2502e05e')['account']['available_balance']['value'])
+b = float(aux.get_account('ff267349-56de-57c6-a3cf-059e2502e05e')['account']['hold']['value'])
+c = aux.get_product()['price']
+print(c)
+print(float(c)*(a+b))#sddsfdsfdsfds
+print(a+b)

@@ -14,12 +14,18 @@ btc_bal = []
 btc_to_buy = []
 
 def index(request):
-    bot.update_order()
-    precio_compra = bot.Mbb.get_list_orders('BUY' ,'OPEN')[0]['order_configuration']['limit_limit_gtc']['limit_price']
-    precio_venta =  bot.Mbb.get_list_orders('SELL','OPEN')[0]['order_configuration']['limit_limit_gtc']['limit_price']
     rango = 100
     time_len = 200
     content = {}
+    bot.update_order()
+    try:
+        precio_compra = bot.Mbb.get_list_orders('BUY' ,'OPEN')[0]['order_configuration']['limit_limit_gtc']['limit_price']
+    except:
+        precio_compra = bot.Mbb.get_order(bot.last_buy_order_id)['order']['order_configuration']['limit_limit_gtc']['limit_price']
+    try:
+        precio_venta = bot.Mbb.get_list_orders('SELL', 'OPEN')[0]['order_configuration']['limit_limit_gtc']['limit_price']
+    except:
+        precio_venta = bot.Mbb.get_order(bot.last_sell_order_id)['order']['order_configuration']['limit_limit_gtc']['limit_price']
 
     spot = bot.Mbb.get_product()['price']
     precios.append(float(spot))
@@ -33,7 +39,6 @@ def index(request):
     content['list_prec_comp'] = list_prec_comp[-time_len:]
     content['list_prec_venta'] = list_prec_venta[-time_len:]
 
-    content['btc_balance_inc'] = btc_bal[-time_len:]
-    content['btc_to_buy'] = btc_to_buy[-time_len:]
+
 
     return render(request,'Crypto/index.html',content)
