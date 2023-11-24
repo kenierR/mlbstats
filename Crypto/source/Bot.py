@@ -10,11 +10,10 @@ class Bot:
         self.last_sell_order_id = self.Mbb.get_list_orders('SELL', 'OPEN')  # ultima orden de venta
 
     def update_order(self):
-        try:
-            self.last_buy_order_id  = self.Mbb.get_list_orders('BUY' ,'OPEN')[0]['order_id'] # id de la ultima orden de compra
-            self.last_sell_order_id = self.Mbb.get_list_orders('SELL','OPEN')[0]['order_id']# id de la ultima orden de venta
-        except:
-            pass
+
+        self.last_buy_order_id  = self.Mbb.get_list_orders('BUY' ,'OPEN')# ultima orden de compra
+        self.last_sell_order_id = self.Mbb.get_list_orders('SELL', 'OPEN')# ultima orden de venta
+
         if self.last_buy_order_id ==[]: # si no hay orden de compra
             #crea una orden de compra y update last_buy_order_id
             self.buy_expected_next_price = float(self.Mbb.get_product()['price']) - 250

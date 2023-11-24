@@ -35,11 +35,17 @@
     </div>
 </div>
 <div class="vr"></div>
+<div>
+    <div class="col-8">
+        <canvas class=""  id="graph"></canvas>
+    </div>
+    <div class="col-2">
+        <canvas id="grafica"></canvas>
+    </div>
+</div>
 
 
 
-
-<canvas class=""  id="graph"></canvas>
 
 <script>
 
@@ -99,6 +105,22 @@ const config = {
 };
 
 new Chart(graph, config);
+
+const labels_pastel = ['Enero', 'Febrero', 'Marzo', 'Abril']
+const colors = ['rgb(69,177,223)', 'rgb(99,201,122)', 'rgb(203,82,82)', 'rgb(229,224,88)'];
+const graph_pastel = document.querySelector("#grafica");
+const data_pastel = {
+    labels: labels_pastel,
+    datasets: [{
+        data: [1, 2, 3, 4],
+        backgroundColor: colors
+    }]
+};
+const config_pastel = {
+    type: 'pie',
+    data: data_pastel,
+};
+new Chart(graph_pastel, config_pastel);
  </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script>setInterval("location.reload()",10000);</script>
