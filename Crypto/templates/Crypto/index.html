@@ -47,9 +47,11 @@ var x = '{{ precios | safe }}';
 var t = '{{ tiempo  | escapejs }}';
 var pc = '{{ list_prec_comp | safe  }}';
 var pv = '{{ list_prec_venta | safe  }}';
+
     precio_compra    = JSON.parse(pc);
     precio_venta     = JSON.parse(pv);
     precios = JSON.parse(x);
+
 
 
 var replace= t.replace(/[\[\]]/g,'');

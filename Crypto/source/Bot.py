@@ -19,7 +19,7 @@ class Bot:
             #crea una orden de compra y update last_buy_order_id
             self.buy_expected_next_price = float(self.Mbb.get_product()['price']) - 250
             self.last_buy_order_id = self.Mbb.set_order_limit('BUY',0.02735,self.buy_expected_next_price)['order_id']
-            self.sell_expected_next_price = float(self.Mbb.get_product()['price']) + 250
+            self.sell_expected_next_price = float(self.Mbb.get_product()['price']) - 250
             try:
                 if (self.Mbb.get_list_orders('SELL', 'OPEN')[0]['status']) == 'OPEN':
                     self.Mbb.set_edit_limit_order(self.last_sell_order_id,self.sell_expected_next_price,0.02735)
@@ -31,7 +31,7 @@ class Bot:
             # crea una orden de venta y update last_sell_order_id
             self.sell_expected_next_price = float(self.Mbb.get_product()['price']) + 250
             self.last_sell_order_id = self.Mbb.set_order_limit('SELL',0.02735,self.sell_expected_next_price)['order_id']
-            self.buy_expected_next_price = float(self.Mbb.get_product()['price']) - 250
+            self.buy_expected_next_price = float(self.Mbb.get_product()['price']) + 250
             try:
                 if (self.Mbb.get_list_orders('BUY','OPEN')[0]['status']) == 'OPEN':
                     self.Mbb.set_edit_limit_order(self.last_buy_order_id,self.buy_expected_next_price,0.02735)

@@ -28,16 +28,17 @@ def index(request):
         precio_venta = bot.Mbb.get_order(bot.last_sell_order_id)['order']['order_configuration']['limit_limit_gtc']['limit_price']
 
     spot = bot.Mbb.get_product()['price']
-    precios.append(float(spot))
+    precios.append(round(float(spot),2))
     now = datetime.now()
     t = str(now.hour) + ':' + str(now.minute) + ':' + str(now.second)
     tiempo.append(t)
-    list_prec_comp.append(float(precio_compra))
-    list_prec_venta.append(float(precio_venta))
+    list_prec_comp.append(round(float(precio_compra),2))
+    list_prec_venta.append(round(float(precio_venta),2))
     content['precios'] = precios[-time_len:]
     content['tiempo']  = tiempo[-time_len:]
     content['list_prec_comp'] = list_prec_comp[-time_len:]
     content['list_prec_venta'] = list_prec_venta[-time_len:]
+    content['btc_balance'] = bot.Mbb.btc_balance()
 
 
 

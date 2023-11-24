@@ -181,10 +181,12 @@ class my_btc_bot():
             return 'Error:you need update data'
         return json.loads(data.decode("utf-8"))
     def btc_balance(self):
-        available = float(aux.get_account('ff267349-56de-57c6-a3cf-059e2502e05e')['account']['available_balance']['value'])
-        hold = float(aux.get_account('ff267349-56de-57c6-a3cf-059e2502e05e')['account']['hold']['value'])
+        available = float(self.get_account('ff267349-56de-57c6-a3cf-059e2502e05e')['account']['available_balance']['value'])
+        hold = float(self.get_account('ff267349-56de-57c6-a3cf-059e2502e05e')['account']['hold']['value'])
+        price = float(self.get_product()['price'])
+        return round(price*(available+hold),2)
 
-aux = my_btc_bot()
+#aux = my_btc_bot()
 #print(aux.set_order_limit('SELL',0.00002,50000)['order_id']) #"79370bfc-8cb4-4cbd-9c58-84c90e226968"
 #print(aux.set_order_limit('BUY',0.00002,1000)['order_id'])
 #"0b10d4d0-2f3e-4fd9-947b-01a6f36e8de7"
@@ -197,9 +199,6 @@ aux = my_btc_bot()
 #print(aux.get_list_orders('SELL','OPEN')[0]['order_configuration']['limit_limit_gtc']['limit_price']) # obtiene lista de ordernes por side y status
 #print(aux.get_list_orders('SELL','OPEN')[0]['status'])
 #print(aux.cancel_all_orders())
-a = float(aux.get_account('ff267349-56de-57c6-a3cf-059e2502e05e')['account']['available_balance']['value'])
-b = float(aux.get_account('ff267349-56de-57c6-a3cf-059e2502e05e')['account']['hold']['value'])
-c = aux.get_product()['price']
-print(c)
-print(float(c)*(a+b))#sddsfdsfdsfds
-print(a+b)
+# a = float(aux.get_account('7e73b72d-518e-55b8-9c4f-df902539333b')['account']['available_balance']['value'])
+# b = float(aux.get_account('7e73b72d-518e-55b8-9c4f-df902539333b')['account']['hold']['value'])
+# print(a,b)
