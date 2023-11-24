@@ -193,19 +193,3 @@ class my_btc_bot():
         available = float(self.get_account(os.environ.get('usd_account_id'))['account']['available_balance']['value'])
         hold = float(self.get_account(os.environ.get('usd_account_id'))['account']['hold']['value'])
         return round((available + hold), 2)
-#aux = my_btc_bot()
-#print(aux.set_order_limit('SELL',0.00002,50000)['order_id']) #"79370bfc-8cb4-4cbd-9c58-84c90e226968"
-#print(aux.set_order_limit('BUY',0.00002,1000)['order_id'])
-#"0b10d4d0-2f3e-4fd9-947b-01a6f36e8de7"
-#print(aux.set_cancel_order(id='0b10d4d0-2f3e-4fd9-947b-01a6f36e8de7'))
-#print(aux.set_edit_limit_order("0b10d4d0-2f3e-4fd9-947b-01a6f36e8de7",'50000','0.0004'))
-#print(aux.set_edit_limit_order("d4fb1ad5-0f39-46fb-859c-92c7ddcc2d27",'50000','0.0004'))
-#print(aux.get_order('59fa5ace-5bc8-47a2-bb7e-34761ab6d0a5')['order']['order_configuration']['limit_limit_gtc']['limit_price'])#['order']['order_configuration'])
-#print(json.loads(aux.get_fills_orders())['fills'][0]['side']) #ultima orden
-#print(aux.get_product())
-#print(aux.get_list_orders('SELL','OPEN')[0]['order_configuration']['limit_limit_gtc']['limit_price']) # obtiene lista de ordernes por side y status
-#print(aux.get_list_orders('SELL','OPEN')[0]['status'])
-#print(aux.cancel_all_orders())
-# a = float(aux.get_account('7e73b72d-518e-55b8-9c4f-df902539333b')['account']['available_balance']['value'])
-# b = float(aux.get_account('7e73b72d-518e-55b8-9c4f-df902539333b')['account']['hold']['value'])
-# print(a+b)
