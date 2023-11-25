@@ -42,6 +42,7 @@ def index(request):
     content['usd_balance'] = bot.Mbb.usd_balance()
     content['total_balance'] = round(content['btc_balance'] + content['usd_balance'],2)
     content['btc_amount'] = bot.Mbb.btc_amount()
+    content['graph_value'] = bot.Mbb.graph_value()
 
 
 

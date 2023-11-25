@@ -35,7 +35,7 @@
     </div>
 </div>
 <div class="vr"></div>
-<div>
+<div class="row">
     <div class="col-8">
         <canvas class=""  id="graph"></canvas>
     </div>
@@ -106,13 +106,15 @@ const config = {
 
 new Chart(graph, config);
 
-const labels_pastel = ['Enero', 'Febrero', 'Marzo', 'Abril']
-const colors = ['rgb(69,177,223)', 'rgb(99,201,122)', 'rgb(203,82,82)', 'rgb(229,224,88)'];
+const labels_pastel = ['BTC    ', 'BTC Hold' , 'USD Balance']
+const colors = ['rgb(69,77,123)', 'rgb(99,201,122)', 'rgb(203,82,82)', 'rgb(229,224,88)'];
 const graph_pastel = document.querySelector("#grafica");
+var gv = '{{ graph_value | safe  }}';
+    graph_v = JSON.parse(gv);
 const data_pastel = {
     labels: labels_pastel,
     datasets: [{
-        data: [1, 2, 3, 4],
+        data: graph_v,
         backgroundColor: colors
     }]
 };

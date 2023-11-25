@@ -181,18 +181,35 @@ class my_btc_bot():
             return 'Error:you need update data'
         return json.loads(data.decode("utf-8"))
     def btc_balance(self):
-        available = float(self.get_account(os.environ.get('btc_account_id'))['account']['available_balance']['value'])
-        hold = float(self.get_account(os.environ.get('btc_account_id'))['account']['hold']['value'])
+        account = self.get_account(os.environ.get('btc_account_id'))['account']
+        available = float(account['available_balance']['value'])
+        hold = float(account['hold']['value'])
         price = float(self.get_product()['price'])
         return round(price*(available+hold),2)
     def btc_amount(self):
-        available = float(self.get_account(os.environ.get('btc_account_id'))['account']['available_balance']['value'])
-        hold = float(self.get_account(os.environ.get('btc_account_id'))['account']['hold']['value'])
+        account = self.get_account(os.environ.get('btc_account_id'))['account']
+        available = float(account['available_balance']['value'])
+        hold = float(account['hold']['value'])
         return (available+hold)
     def usd_balance(self):
-        available = float(self.get_account(os.environ.get('usd_account_id'))['account']['available_balance']['value'])
-        hold = float(self.get_account(os.environ.get('usd_account_id'))['account']['hold']['value'])
+        account = self.get_account(os.environ.get('usd_account_id'))['account']
+        available = float(account['available_balance']['value'])
+        hold = float(account['hold']['value'])
         return round((available + hold), 2)
+    def graph_value(self):
+        btc_price = self.get_product()['price']
+        btc_account = self.get_account(os.environ.get('btc_account_id'))['account']
+        usd_account = self.get_account(os.environ.get('usd_account_id'))['account']
+        btc_available = float(btc_account['available_balance']['value'])*float(btc_price)
+        btc_hold = float(btc_account['hold']['value'])*float(btc_price)
+        usd_ava = float(usd_account['available_balance']['value'])
+        total = btc_hold + btc_available+usd_ava
+        pc_btc_ava = btc_available*100/total
+        pc_btc_hold = btc_hold*100/total
+        pc_usd_ava = usd_ava*100/total
+
+        return [int(pc_btc_ava),int(pc_btc_hold),int(pc_usd_ava)]
+
 #aux = my_btc_bot()
 #print(aux.set_order_limit('SELL',0.00002,50000)['order_id']) #"79370bfc-8cb4-4cbd-9c58-84c90e226968"
 #print(aux.set_order_limit('BUY',0.00002,1000)['order_id'])
@@ -209,3 +226,4 @@ class my_btc_bot():
 # a = float(aux.get_account('7e73b72d-518e-55b8-9c4f-df902539333b')['account']['available_balance']['value'])
 # b = float(aux.get_account('7e73b72d-518e-55b8-9c4f-df902539333b')['account']['hold']['value'])
 # print(a+b)
+#print(aux.graph_value())
